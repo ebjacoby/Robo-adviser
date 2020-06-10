@@ -47,15 +47,33 @@ recent_low = min(low_prices)
 
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "MSFT_prices.csv")
 
+csv_headers = ["timestamp", "open", "high", "low", "close", "volume"]
 with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
-    writer = csv.DictWriter(csv_file, fieldnames=["city", "name"])
+    writer = csv.DictWriter(csv_file, fieldnames=csv_headers)
     writer.writeheader() # uses fieldnames set above
-    writer.writerow({"city": "New York", "name": "Yankees"})
-    writer.writerow({"city": "New York", "name": "Mets"})
-    writer.writerow({"city": "Boston", "name": "Red Sox"})
-    writer.writerow({"city": "New Haven", "name": "Ravens"})
-
     
+    #looping
+    #writer.writerow({"timestamp": "TODO", "open": "TODO", "high": "TODO", "low": "TODO", "close": "TODO", "volume": "TODO",})
+    #assembling a dictionary that will get into the csv file (with examples)
+    writer.writerow({
+        "timestamp": "TODO",
+        "open": "TODO",
+        "high": "TODO",
+        "low": "TODO",
+        "close": "TODO",
+        "volume": "TODO"
+    })
+    
+    writer.writerow({
+        "timestamp": "TODO",
+        "open": "TODO",
+        "high": "TODO",
+        "low": "TODO",
+        "close": "TODO",
+        "volume": "TODO"
+    })
+
+
 # app/robo_advisor.py
 
 print("-------------------------")
