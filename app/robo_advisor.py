@@ -5,12 +5,19 @@ import csv
 import json # included in python language already
 import os
 
+from dotenv import load_dotenv
 import requests
+
+load_dotenv() #loads contents of the .env file into the script's environment
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
-request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo"
+api_key = os.environ.get("ALPHAVANTAGE_API_KEY") #> "demo"
+
+symbol = "MSFT" # TODO accept user input
+
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
 
 response = requests.get(request_url)
 
@@ -71,7 +78,7 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
 # app/robo_advisor.py
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print("SELECTED SYMBOL: XYZ") #MICROSOFT KEY
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: 2018-02-20 02:00pm") #DATETIME MODULE
@@ -82,7 +89,7 @@ print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+print("RECOMMENDATION REASON: TODO") #HAVE TO DO ON MY OWN>>>>>>>>>
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}...")
 print("-------------------------")
