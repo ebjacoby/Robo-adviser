@@ -20,9 +20,17 @@ parsed_response = json.loads(response.text)
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
-latest_close = parsed_response["Time Series (Daily)"]["2020-06-09"]["4. close"]
-
 #breakpoint()
+
+tsd = parsed_response["Time Series (5min)"]
+
+dates = list(tsd.keys()) # TODO: assumes first day is on top, but consider sort to ensure latest day is first
+
+latest_day = dates[0]
+
+latest_close = tsd[latest_day]["4. close"]
+
+
 
 
 # app/robo_advisor.py
@@ -34,7 +42,7 @@ print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT: 2018-02-20 02:00pm") #DATETIME MODULE
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")#format string
-print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
+print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #string version of a float?
 print("RECENT HIGH: $101,000.00")
 print("RECENT LOW: $99,000.00")
 print("-------------------------")
