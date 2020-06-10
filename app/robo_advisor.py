@@ -28,7 +28,7 @@ tsd = parsed_response["Time Series (5min)"]
 
 dates = list(tsd.keys()) # TODO: assumes first day is on top, but consider sort to ensure latest day is first
 
-latest_day = dates[0]
+latest_day = dates[0] #each date is a str
 
 latest_close = tsd[latest_day]["4. close"]
 
@@ -55,23 +55,17 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
     #looping
     #writer.writerow({"timestamp": "TODO", "open": "TODO", "high": "TODO", "low": "TODO", "close": "TODO", "volume": "TODO",})
     #assembling a dictionary that will get into the csv file (with examples)
-    writer.writerow({
-        "timestamp": "TODO",
-        "open": "TODO",
-        "high": "TODO",
-        "low": "TODO",
-        "close": "TODO",
-        "volume": "TODO"
-    })
     
-    writer.writerow({
-        "timestamp": "TODO",
-        "open": "TODO",
-        "high": "TODO",
-        "low": "TODO",
-        "close": "TODO",
-        "volume": "TODO"
-    })
+    for date in dates:
+        daily_prices = tsd[date]
+        writer.writerow({
+            "timestamp": date,
+            "open": daily_prices["1. open"],
+            "high": daily_prices["2. high"],
+            "low": daily_prices["3. low"],
+            "close": daily_prices["4. close"],
+            "volume": daily_prices["5. volume"]
+        })
 
 
 # app/robo_advisor.py
