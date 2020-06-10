@@ -1,9 +1,11 @@
 #
 # INFO INPUTS
 #
+import csv
+import json # included in python language already
+import os
 
 import requests
-import json # included in python language already
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
@@ -43,6 +45,17 @@ for date in dates:
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "MSFT_prices.csv")
+
+with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+    writer = csv.DictWriter(csv_file, fieldnames=["city", "name"])
+    writer.writeheader() # uses fieldnames set above
+    writer.writerow({"city": "New York", "name": "Yankees"})
+    writer.writerow({"city": "New York", "name": "Mets"})
+    writer.writerow({"city": "Boston", "name": "Red Sox"})
+    writer.writerow({"city": "New Haven", "name": "Ravens"})
+
+    
 # app/robo_advisor.py
 
 print("-------------------------")
@@ -59,6 +72,8 @@ print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
+print(f"WRITING DATA TO CSV: {csv_file_path}...")
+print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
 
@@ -67,3 +82,7 @@ print("-------------------------")
 #
 # INFO OUTPUTS
 #
+
+# check notes on csv module and os module (helps with file location)
+# csv_file_path = "data/MSFT_prices.csv" # a relative filepath
+
