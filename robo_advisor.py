@@ -30,8 +30,14 @@ latest_day = dates[0]
 
 latest_close = tsd[latest_day]["4. close"]
 
+# maximum of all the high prices
+high_prices = []
 
+for date in dates:
+    high_price = tsd[date]["2. high"]
+    high_prices.append(float(high_price))
 
+recent_high = max(high_prices)
 
 # app/robo_advisor.py
 
@@ -43,7 +49,7 @@ print("REQUEST AT: 2018-02-20 02:00pm") #DATETIME MODULE
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")#format string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #string version of a float?
-print("RECENT HIGH: $101,000.00")
+print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print("RECENT LOW: $99,000.00")
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
