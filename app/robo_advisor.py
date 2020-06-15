@@ -18,8 +18,8 @@ api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 
 symbol = "MSFT" # TODO accept user input
 
-request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
-
+#request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 response = requests.get(request_url)
 
 # print(type(response)) #> class 'requests.models.Response'
@@ -32,7 +32,7 @@ last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
 #breakpoint()
 
-tsd = parsed_response["Time Series (5min)"]
+tsd = parsed_response["Time Series (Daily)"]
 
 dates = list(tsd.keys()) # TODO: assumes first day is on top, but consider sort to ensure latest day is first
 
@@ -53,7 +53,8 @@ for date in dates:
 recent_high = max(high_prices)
 recent_low = min(low_prices)
 
-csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "MSFT_prices.csv")
+csv_file_name = symbol + "_prices.csv"
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", csv_file_name)
 
 csv_headers = ["timestamp", "open", "high", "low", "close", "volume"]
 with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
