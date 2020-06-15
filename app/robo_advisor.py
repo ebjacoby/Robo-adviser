@@ -51,8 +51,11 @@ for date in dates:
     low_price = tsd[date]["3. low"]
     low_prices.append(float(low_price))
 
-recent_high = max(high_prices)
-recent_low = min(low_prices)
+recent_high = max(high_prices[:100])
+recent_low = min(low_prices[:100])
+
+fiftytwo_week_high = max(high_prices[:365])
+fiftytwo_week_low = min(low_prices[:365])
 
 csv_file_name = symbol + "_prices.csv"
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", csv_file_name)
@@ -95,9 +98,12 @@ print(f"LATEST DAY: {last_refreshed}")#format string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #string version of a float?
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print(" ")
+print(f"52-WEEK HIGH: {to_usd(float(fiftytwo_week_high))}")
+print(f"52-WEEK LOW: {to_usd(float(fiftytwo_week_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO") #HAVE TO DO ON MY OWN>>>>>>>>>
+print("RECOMMENDATION: BUY!") #TODO
+print("RECOMMENDATION REASON: TODO") #TODO HAVE TO DO ON MY OWN>>>>>>>>>
 print("-------------------------")
 print(f"WRITING DATA TO CSV: data\{csv_file_name}...")
 print("-------------------------")
