@@ -7,13 +7,14 @@ import os
 
 from dotenv import load_dotenv
 import requests
+import datetime
 
 load_dotenv() #loads contents of the .env file into the script's environment
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
-api_key = os.environ.get("ALPHAVANTAGE_API_KEY") #> "demo"
+api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 
 symbol = "MSFT" # TODO accept user input
 
@@ -74,14 +75,19 @@ with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writin
             "volume": daily_prices["5. volume"]
         })
 
+#time
+current_day = datetime.date.today()
+now = datetime.datetime.now()
+current_time = now.strftime("%H:%M:%S")
+full_time = str(current_day) + " " + str(current_time)
 
 # app/robo_advisor.py
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ") #MICROSOFT KEY
+print("SELECTED SYMBOL: ", symbol) #MICROSOFT KEY
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm") #DATETIME MODULE
+print("REQUEST AT: ", full_time) #DATETIME MODULE
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")#format string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #string version of a float?
