@@ -17,34 +17,32 @@ def to_usd(my_price):
 
 api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 
-symbol = "MSFT" # TODO accept user input
 
-# while True: 
-#     selected_id = input("Please input a unique product identifier (up to " + str(max_id) + ") or enter 'DONE' when finished: ") #> "9" (string) 
-#     #> DONE
-#     if selected_id.lower() == "done":
-#         break
-#     elif not selected_id.isnumeric():
-#         continue
-#     elif int(selected_id) not in id_list:
-#         continue
-#     else:
-#         selected_ids.append(selected_id)  
+#symbol = input("Please input a stock identifier: ") # TODO accept user input
 
+try:
+    symbol = input("Please input a stock identifier: ")
+    symbol_length = len(symbol)
+    if (symbol_length < 3 or symbol_length > 5) or not symbol.isalpha():
+        print("The system is expecting a properly-formed stock symbol like 'MSFT' or 'IBM' - please try again!")
+        exit()
 
+    #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
+    #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={symbol}&apikey={api_key}"
+    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
+    response = requests.get(request_url)
 
-#request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
-#request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={symbol}&apikey={api_key}"
-request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
-response = requests.get(request_url)
+    # print(type(response)) #> class 'requests.models.Response'
+    # print(response.status_code) #> 200 (count)
+    # print(response.text) #> str (so need JSON module to process into dictionary)
 
-# print(type(response)) #> class 'requests.models.Response'
-# print(response.status_code) #> 200 (count)
-# print(response.text) #> str (so need JSON module to process into dictionary)
+    parsed_response = json.loads(response.text)
 
-parsed_response = json.loads(response.text)
+    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
-last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+except Exception:
+    print("The system is expecting a properly-formed stock symbol like 'MSFT' or 'IBM' - please try again!")
+    exit()
 
 #breakpoint()
 
