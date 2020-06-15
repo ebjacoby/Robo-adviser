@@ -19,7 +19,8 @@ api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 symbol = "MSFT" # TODO accept user input
 
 #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
-request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
+#request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={symbol}&apikey={api_key}"
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={api_key}"
 response = requests.get(request_url)
 
 # print(type(response)) #> class 'requests.models.Response'
@@ -57,7 +58,7 @@ csv_file_name = symbol + "_prices.csv"
 csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", csv_file_name)
 
 csv_headers = ["timestamp", "open", "high", "low", "close", "volume"]
-with open(csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+with open(csv_file_path, "w", newline='') as csv_file: # "w" means "open the file for writing"
     writer = csv.DictWriter(csv_file, fieldnames=csv_headers)
     writer.writeheader() # uses fieldnames set above
     
@@ -98,7 +99,7 @@ print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO") #HAVE TO DO ON MY OWN>>>>>>>>>
 print("-------------------------")
-print(f"WRITING DATA TO CSV: {csv_file_path}...")
+print(f"WRITING DATA TO CSV: data\{csv_file_name}...")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
