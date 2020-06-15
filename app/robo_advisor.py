@@ -6,6 +6,7 @@ import json # included in python language already
 import os
 
 from dotenv import load_dotenv
+from statistics import mean
 import requests
 import datetime
 
@@ -17,6 +18,20 @@ def to_usd(my_price):
 api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 
 symbol = "MSFT" # TODO accept user input
+
+# while True: 
+#     selected_id = input("Please input a unique product identifier (up to " + str(max_id) + ") or enter 'DONE' when finished: ") #> "9" (string) 
+#     #> DONE
+#     if selected_id.lower() == "done":
+#         break
+#     elif not selected_id.isnumeric():
+#         continue
+#     elif int(selected_id) not in id_list:
+#         continue
+#     else:
+#         selected_ids.append(selected_id)  
+
+
 
 #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={api_key}"
 #request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={symbol}&apikey={api_key}"
@@ -40,19 +55,29 @@ dates = list(tsd.keys()) # TODO: assumes first day is on top, but consider sort 
 latest_day = dates[0] #each date is a str
 
 latest_close = tsd[latest_day]["4. close"]
+latest_volume = tsd[latest_day]["5. volume"]
 
 # maximum and minimum of all the high prices
 high_prices = []
 low_prices = []
+closing_prices = []
+volumes = []
 
 for date in dates:
     high_price = tsd[date]["2. high"]
     high_prices.append(float(high_price))
     low_price = tsd[date]["3. low"]
     low_prices.append(float(low_price))
+    closing_price = tsd[date]["4. close"]
+    closing_prices.append(float(closing_price))
+    volume = tsd[date]["5. volume"]
+    volumes.append(float(volume))
 
-recent_high = max(high_prices[:100])
+recent_high = max(high_prices[:100]) #[:100] = most recent 100 days
 recent_low = min(low_prices[:100])
+
+recent_average_closing_price = mean(closing_prices[:100])
+recent_average_volume = mean(volumes[:100])
 
 fiftytwo_week_high = max(high_prices[:365])
 fiftytwo_week_low = min(low_prices[:365])
@@ -98,9 +123,13 @@ print(f"LATEST DAY: {last_refreshed}")#format string
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #string version of a float?
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print(f"LATEST VOLUME TRADED: {(float(latest_volume))}")
 print(" ")
 print(f"52-WEEK HIGH: {to_usd(float(fiftytwo_week_high))}")
 print(f"52-WEEK LOW: {to_usd(float(fiftytwo_week_low))}")
+print(" ")
+print(f"100-DAY AVERAGE CLOSING PRICE: {to_usd(float(recent_average_closing_price))}")
+print(f"100-DAY AVARAGE TRADING VOLUME: {(float(recent_average_volume))}")
 print("-------------------------")
 print("RECOMMENDATION: BUY!") #TODO
 print("RECOMMENDATION REASON: TODO") #TODO HAVE TO DO ON MY OWN>>>>>>>>>
