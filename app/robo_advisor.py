@@ -15,6 +15,10 @@ load_dotenv() #loads contents of the .env file into the script's environment
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
+def to_percent(number):
+    return "{:.2%}".format(number)
+
+
 api_key = os.environ.get("ALPHA_VANTAGE_API") #> "demo"
 
 
@@ -102,6 +106,45 @@ with open(csv_file_path, "w", newline='') as csv_file: # "w" means "open the fil
             "close": daily_prices["4. close"],
             "volume": daily_prices["5. volume"]
         })
+    
+    x = 0
+    closing_prices_TSR = []
+
+    for x in range(100):
+        closing_price_percent = to_percent((float(closing_prices[x]) / float(closing_prices[x+1])) - 1)
+        # closing_price_percent = closing_price_percent
+        closing_prices_TSR.append(closing_price_percent)
+
+
+print(closing_prices_TSR)
+# print(closing_price_two)
+
+
+breakpoint()
+
+
+
+
+# import csv
+
+# with open('C:/test/test.csv','r') as csvinput:
+#     with open('C:/test/output.csv', 'w') as csvoutput:
+#         writer = csv.writer(csvoutput, lineterminator='\n')
+#         reader = csv.reader(csvinput)
+
+#         all = []
+#         row = next(reader)
+#         row.append('Berry')
+#         all.append(row)
+
+#         for row in reader:
+#             row.append(row[0])
+#             all.append(row)
+
+#         writer.writerows(all)
+
+
+
 
 #time
 current_day = datetime.date.today()
