@@ -111,40 +111,35 @@ with open(csv_file_path, "w", newline='') as csv_file: # "w" means "open the fil
     closing_prices_TSR = []
 
     for x in range(100):
-        closing_price_percent = to_percent((float(closing_prices[x]) / float(closing_prices[x+1])) - 1)
+        closing_price_percent = (float(closing_prices[x]) / float(closing_prices[x+1])) - 1
         # closing_price_percent = closing_price_percent
         closing_prices_TSR.append(closing_price_percent)
+    
+    y = 0
+    cdfs = []
 
+    for y in range(100):
+        cdf = 1 + y #cumulative_distribution_function
+        cdf2 = cdf / 100
+        cdfs.append(cdf2)
+    
+    percent_change_cdf = {}
+    closing_prices_TSR.sort()
 
-print(closing_prices_TSR)
-# print(closing_price_two)
+    for i in range(100):
+        percent_change_cdf[cdfs[i]] = closing_prices_TSR[i]
 
+    sum_gains = sum(closing_prices_TSR)
 
-breakpoint()
-
-
-
-
-# import csv
-
-# with open('C:/test/test.csv','r') as csvinput:
-#     with open('C:/test/output.csv', 'w') as csvoutput:
-#         writer = csv.writer(csvoutput, lineterminator='\n')
-#         reader = csv.reader(csvinput)
-
-#         all = []
-#         row = next(reader)
-#         row.append('Berry')
-#         all.append(row)
-
-#         for row in reader:
-#             row.append(row[0])
-#             all.append(row)
-
-#         writer.writerows(all)
-
-
-
+    percentage = -1 
+    for percent, gain in sorted(percent_change_cdf.items(),key=lambda each:each[1]):
+        if gain > 0:
+            percentage = percent
+            break
+    if percentage == -1:
+        print("don't buy")
+    else:
+        print("-------------------------")
 
 #time
 current_day = datetime.date.today()
@@ -172,8 +167,26 @@ print(" ")
 print(f"100-DAY AVERAGE CLOSING PRICE: {to_usd(float(recent_average_closing_price))}")
 print(f"100-DAY AVARAGE TRADING VOLUME: {(float(recent_average_volume))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!") #TODO
-print("RECOMMENDATION REASON: TODO") #TODO HAVE TO DO ON MY OWN>>>>>>>>>
+
+if sum_gains > 0:
+    print("BUY")
+    print("-------------------------")
+    print("RECOMMENDATION: BUY THIS STOCK! ACCORDING TO OUR TIME-SERIES ANALYSIS,") 
+    print("USING A CUMULATIVE DISTRIBUTION FUNCTION TO ESTIMATE RETURNS,")
+    print("WE PROJECT THAT THERE IS A ", to_percent(1 - percentage), " CHANCE THAT YOU WILL EARN") 
+    print("A GAIN OF ", to_percent(percent_change_cdf[percentage]), " OR GREATER.")
+    print("-------------------------")
+    print("YOUR RETURN IS PROJECTED TO BE", to_percent(sum_gains), "IF YOU PURCHASE THIS STOCK!")
+else:
+    print("DO NOT BUY")
+    print("-------------------------")
+    print("RECOMMENDATION: DO NOT BUY THIS STOCK! ACCORDING TO OUR TIME-SERIES ANALYSIS,")
+    print("USING A CUMULATIVE DISTRIBUTION FUNCTION TO ESTIMATE RETURNS,")
+    print("WE PROJECT YOUR RETURN TO BE", to_percent(percentage), " CHANCE THAT YOU WILL INCUR")
+    print("A LOSS OF ", to_percent(percent_change_cdf[percentage]) * -1, " OR GREATER.")
+    print("-------------------------")
+    print("YOUR RETURN IS PROJECTED TO BE", to_percent(sum_gains), "IF YOU PURCHASE THIS STOCK.")
+
 print("-------------------------")
 print(f"WRITING DATA TO CSV: data\{csv_file_name}...")
 print("-------------------------")
