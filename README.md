@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 ### API SETUP
 
-Navigate to the url https://www.alphavantage.co/ and "get your free API key". Store the provided key in a .env file (name it ALPHA_VANTAGE_API.env). Ensure that you create a corresponding .gitignore file in the root directory and name the API key in it (ALPHA_VANTAGE_API.env should grey out): otherwise, your private API Key will be visible to the public, if the repository is committed. 
+Navigate to the url https://www.alphavantage.co/ and "get your free API key". Store the provided key in a .env file (name it `ALPHA_VANTAGE_API`.env). Ensure that you create a corresponding .gitignore file in the root directory and name the API key in it (`ALPHA_VANTAGE_API`.env should grey out): otherwise, your private API Key will be visible to the public, if the repository is committed. 
 
 Also, in the command line, enter your env name and the corresponding key in this format: 
 
