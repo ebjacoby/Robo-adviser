@@ -27,7 +27,7 @@ From within the virtual environment, install the required packages specified in 
 ```sh
 pip install -r requirements.txt
 ```
-
+If the requirements.txt does not properly install for whatever reason, each quality must be installed by pip separately... :)
 ### API SETUP
 
 Navigate to the url https://www.alphavantage.co/ and "get your free API key". Store the provided key in a .env file (name it `ALPHA_VANTAGE_API`.env). Ensure that you create a corresponding .gitignore file in the root directory and name the API key in it (`ALPHA_VANTAGE_API`.env should grey out): otherwise, your private API Key will be visible to the public, if the repository is committed. 
